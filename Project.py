@@ -146,6 +146,6 @@ t_critico = t.ppf(1 - 0.05/2, gl)
     # Finalmente, se imprime el resultado de la prueba de hipótesis
     # y se crea un reporte en word analizando los resultados de todo el trabajo hecho acá.   
 if t_est > t_critico or t_est < -t_critico:
-    print("Se rechaza H0, la media poblacional es diferente de", mu0)
+    print("Se rechaza H0, el costo promedio de los contratos es diferente de", mu0)
 else:
-    print("No se puede rechazar H0, la media poblacional es igual a", mu0)
+    print("No se puede rechazar H0, el costo promedio de los contratos es igual a", mu0)
