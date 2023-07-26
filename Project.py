@@ -66,5 +66,72 @@ print(pymes)
 
 datos['Es Pyme'].value_counts()/len(datos)*100
 
-variables_interes= datos.describe(include = ['O'])['Localización']
+    # Podemos describir el comportamiento de las columnas con la función .describe(include=[0]), la cual nos permite analizar columnas con datos No numericos
+
+variables_interes= datos.describe(include = ['O'])[['Sector','Tipo de Contrato']]
 print(variables_interes)    
+
+    # Con la función .drop_duplicates, podemos ver el tipo de valores que tiene cada columna, esta función es para mirar varias columnas la vez
+    # en caso de que se requiera ver el comportamiento de una sola columna se usa la función .unique() en vez de drop_duplicates()
+    
+tipo_datos = datos[['Sector','Tipo de Contrato']].drop_duplicates()
+print(tipo_datos)
+
+    # Ahora creamos unos diagramas de caja los cuales son muy útiles para ver la distribución por cuartiles, así como para visualizar algunos estadísticos básicos, y valores extremos
+    # Esto lo hacemos con la función de seaborn llamada .boxplot
+    # También, es muy importante rotar los labeles, para evitar que los datos se solapen y así tener una mejor visibilidad.  
+
+sns.boxplot(x='Tipo de Contrato', y='Valor del Contrato', data=datos)
+plt.xticks(rotation=90)
+plt.show()
+
+    # En ambos diagramas, buscamos ver la relación entre el tipo de contrato y el valor del mismo
+    # así como la modalidad de contratación con relación al valor del contrato.
+
+sns.boxplot(x='Modalidad de Contratacion', y='Valor del Contrato', data=datos)
+plt.xticks(rotation=90)
+plt.show()
+
+    # Ahora queremos obtener algunos estadisticos de probabilidad de los datos, aplicando las formulas estadísticas
+    # Comenzamos contado el total de los datos en la columna "valor del contrato"
+total_contratos = datos['Valor del Contrato'].count()
+print("El número total de registros es:", total_contratos)
+    # Si quisieramos saber cual es la probabilidad de obtener un contrato con un costo mayor a 200 millones aplicamos la formula al conteo anterior
+registros_mayor_200 = datos[datos['Valor del Contrato'] >200000000]['Valor del Contrato'].count()
+print ('El número total de contratos con un costo mayor a 200 millones es:',registros_mayor_200)
+    # Finalmente, con base en los datos anteriores calculamos la probabilidad de obtener un contrato mayor a 200 millones
+probabilidad= registros_mayor_200/total_contratos
+porcentaje = probabilidad*100
+print("La probabilidad de obtener un contrato con un costo mayor a 200 millones es de: {:.2f}%".format(porcentaje))
+
+    # Después de conocer los estádisticos de probabilidad, buscamos conocer los estimadores puntuales de promedio, varianza y desviación estándar, para los valores de contrato
+    # lo cual es importante para conocer el comportamiento de la población con los datos de la muestra 
+
+media_contratos = datos['Valor del Contrato'].mean()
+print("El valor promedio de los contratos es", media_contratos)
+var_contratos = np.var(datos['Valor del Contrato'])
+print("La varianza de los contratos es: ", var_contratos)
+desv_contratos  = var_contratos** 0.5
+print("La desviación estándar de la varianza es: ", desv_contratos)
+
+    # Finalmente, para terminar el análisis de los datos, calculamos los intervalos de confianza y hacemos pruebas de hipotesis con los datos
+    # para ver la confiabilidad de la muestra
+    # importante importar la distribución t del paquete scipy
+
+from scipy.stats import t
+    # Definir la muestra
+n = len(datos['Valor del Contrato'])
+    # Calcular la media muestral y la desviación estándar muestral
+media = media_contratos
+s = desv_contratos
+    # Definir el nivel de significancia y los grados de libertad
+alpha = 0.05
+gl = n - 1
+    # Calcular el valor crítico de la distribución t
+t_critico = t.ppf(1 - alpha / 2, gl)
+    # Calcular el intervalo de confianza
+intervalo = (media - t_critico * s / np.sqrt(n), media + t_critico * s / np.sqrt(n))
+print("Intervalo de confianza del 95%:", intervalo)
+print("Podemos asegurar con un 95% de confianza que el valor promedio de los contratos para esta entidad está en el rango:", intervalo)
+
+    # Para finalzar hacemos una prueba de hipotesis 
