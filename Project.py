@@ -1,5 +1,5 @@
 
-    # Projecto de analitica de datos con una base de datos de libre acceso, detallare el paso a paso de este análisis
+    # Projecto de analitica de datos con una base de datos de libre acceso, detallaré el paso a paso de este análisis
 
 import pandas as pd # manejo de data frames
 import seaborn as sns # visualización
