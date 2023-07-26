@@ -42,5 +42,29 @@ pd.options.display.float_format = '{:.2f}'.format
 
 print(valorcontrato)
 
-sns.histplot(datos['Valor del Contrato'], kde=False)
+    # Usamos la función de seaborn para crear histogramas sns.histplot() dejando el Kernel Density Estimation como False, 
+    # Dada la distribución de los datos se recomienda usar el logaritmo en base 10, para escalar los datos y tener una mejor visualización de los mismos,
+    # Esto se hace mediante la función de numpy np.log10()
+    # Con la función plt.title, xlabel, ylabel, se le otorga títulos y etiquetas a los ejes
+    # Mostramos el histograma con la función de Matplotlib plt.show() 
+
+datos['log_variable'] = np.log10(datos['Valor del Contrato']+1)
+sns.histplot(datos['log_variable'], kde=False)
+plt.title('Valores del contrato')
+plt.xlabel('Valor')
+plt.ylabel('Frecuencia')
 plt.show()
+
+    # Con la función .value_counts() calculamos la frecuencia de un mismo valor en un determinada columna en este caso "Es pymes"
+    # Esta función es muy interesante, dado que nos permite generar insights acerca de cuales son los valores más comunes en una serie, o los menos comunes. 
+
+pymes= datos['Es Pyme'].value_counts()
+print(pymes)
+
+    # De igual forma, podemos sacar algunos estádisticos como el porcentaje de participación de las empresas pymes y las no pymes, 
+    # esto agregando al código la formula de calculo de porcentaje cantidad/total *100
+
+datos['Es Pyme'].value_counts()/len(datos)*100
+
+variables_interes= datos.describe(include = ['O'])['Localización']
+print(variables_interes)    
