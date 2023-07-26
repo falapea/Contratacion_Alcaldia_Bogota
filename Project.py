@@ -41,3 +41,6 @@ valorcontrato = datos["Valor del Contrato"].describe()
 pd.options.display.float_format = '{:.2f}'.format
 
 print(valorcontrato)
+
+sns.histplot(datos['Valor del Contrato'], kde=False)
+plt.show()
