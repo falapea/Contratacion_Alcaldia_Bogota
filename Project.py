@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np #
 import io
 import scipy.stats # distribuciones estadísticas
+from scipy.stats import t
 
     # Agregamos la base de datos a través de la libreria pandas, la cual nos permite trabajar con archivos de excel con la función read_excel()
 datos = pd.read_excel('C:\\Users\\Camilo\\Documents\\Data Science\\Alcaldia_projecto\\AlcaldiaBogota_2017_2019.xlsx')
@@ -118,7 +119,7 @@ print("La desviación estándar de la varianza es: ", desv_contratos)
     # para ver la confiabilidad de la muestra
     # importante importar la distribución t del paquete scipy
 
-from scipy.stats import t
+
     # Definir la muestra
 n = len(datos['Valor del Contrato'])
     # Calcular la media muestral y la desviación estándar muestral
@@ -134,4 +135,16 @@ intervalo = (media - t_critico * s / np.sqrt(n), media + t_critico * s / np.sqrt
 print("Intervalo de confianza del 95%:", intervalo)
 print("Podemos asegurar con un 95% de confianza que el valor promedio de los contratos para esta entidad está en el rango:", intervalo)
 
-    # Para finalzar hacemos una prueba de hipotesis 
+    # Para finalzar hacemos una prueba de hipotesis planteando la hipotesis nula de que los contratos tienen un costo promedio de 70.000 000
+    # para esto comenzamos definiendo el valor hipotético de la media poblacional    
+mu0 = 70000000
+    # Calculamos el estadístico de prueba t
+t_est = (media - mu0) / (s / np.sqrt(n))
+    # Calcular los grados de libertad y el valor crítico de t
+gl = n - 1
+t_critico = t.ppf(1 - 0.05/2, gl)
+    # Imprimir el resultado de la prueba de hipótesis   
+if t_est > t_critico or t_est < -t_critico:
+    print("Se rechaza H0, la media poblacional es diferente de", mu0)
+else:
+    print("No se puede rechazar H0, la media poblacional es igual a", mu0)
