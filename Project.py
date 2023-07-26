@@ -140,10 +140,10 @@ print("Podemos asegurar con un 95% de confianza que el valor promedio de los con
 mu0 = 70000000
     # Calculamos el estadístico de prueba t
 t_est = (media - mu0) / (s / np.sqrt(n))
-    # Calcular los grados de libertad y el valor crítico de t
+    # Calculamos los grados de libertad y el valor crítico de t
 gl = n - 1
 t_critico = t.ppf(1 - 0.05/2, gl)
-    # Imprimir el resultado de la prueba de hipótesis   
+    # Finalmente, se imprime el resultado de la prueba de hipótesis   
 if t_est > t_critico or t_est < -t_critico:
     print("Se rechaza H0, la media poblacional es diferente de", mu0)
 else:
